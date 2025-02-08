@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import logo from '../assets/site-logo.png';
 import userIcon from '../assets/user-icon.png';
 
+<link rel="icon" href="/favicon.ico"></link>
+
 // hard-coded data for demo
 const projectsData = [
   {
@@ -181,27 +183,26 @@ const projectsData = [
 ];
 
 function HomePage() {
-  // Which project is selected
+  // selected proj state
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(-1);
 
-  // Task selection states
-  const [selectedTask, setSelectedTask] = useState(null); // the actual task object
-  // 'todo' or 'completed' or null
+  // selected task state
+  const [selectedTask, setSelectedTask] = useState(null); 
+
   const [selectedTaskCategory, setSelectedTaskCategory] = useState(null);
 
-  // Hover states for projects
+  // hover states projects
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState(-1);
-  // Hover states for tasks (To Do)
+  // Hover states for tasks
   const [hoveredTodoIndex, setHoveredTodoIndex] = useState(-1);
-  // Hover states for tasks (Completed)
   const [hoveredCompletedIndex, setHoveredCompletedIndex] = useState(-1);
 
-  // *** NEW STATE FOR TASK CREATION ***
+  // task creation state
   const [isCreatingTask, setIsCreatingTask] = useState(false);
-  // Which list is being created into: 'todo' or 'completed'
+  // new task category
   const [creatingCategory, setCreatingCategory] = useState(null);
 
-  // We'll keep a small form state for the new task
+  // new task data
   const [newTaskData, setNewTaskData] = useState({
     name: '',
     description: '',
@@ -209,11 +210,10 @@ function HomePage() {
     members: []
   });
 
-  // The currently selected project object, or null if none selected
+  // selected project
   const selectedProject =
     selectedProjectIndex >= 0 ? projectsData[selectedProjectIndex] : null;
 
-  // Ensure the page can occupy the entire browser window
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -226,28 +226,28 @@ function HomePage() {
     };
   }, []);
 
-  // Handler for selecting a project
+  // selecting project
   const handleProjectClick = (index) => {
     setSelectedProjectIndex(index);
-    // Reset any selected task when changing projects
+    // reset selected task when changing proj
     setSelectedTask(null);
     setSelectedTaskCategory(null);
 
-    // Also reset creation state
+    // reset creation state
     setIsCreatingTask(false);
     setCreatingCategory(null);
   };
 
-  // Handler for selecting a task in "to do" or "completed"
+  // selecting task
   const handleTaskClick = (taskObj, category, index) => {
     setSelectedTask(taskObj);
     setSelectedTaskCategory(category);
 
-    // Close create mode if it was open
+    // close create task page on task click
     setIsCreatingTask(false);
     setCreatingCategory(null);
 
-    // Sync hover states
+    // hover states
     if (category === 'todo') {
       setHoveredTodoIndex(index);
       setHoveredCompletedIndex(-1);
@@ -257,16 +257,16 @@ function HomePage() {
     }
   };
 
-  // *** CLICK HANDLER FOR "+ Add Task" BUTTON ***
+  // add task button clicks
   const handleAddTaskClick = (category) => {
     setIsCreatingTask(true);
     setCreatingCategory(category);
 
-    // Reset selected task
+    // deselect task
     setSelectedTask(null);
     setSelectedTaskCategory(null);
 
-    // Reset the newTaskData
+    // reset new task data
     setNewTaskData({
       name: '',
       description: '',
@@ -275,7 +275,7 @@ function HomePage() {
     });
   };
 
-  // *** STYLED "ADD TASK" BUTTON ***
+  // add task button
   const renderAddTaskButton = (category) => {
     const isSelected = isCreatingTask && creatingCategory === category;
 
@@ -320,20 +320,18 @@ function HomePage() {
     );
   };
 
-  // *** FORM HANDLERS ***
+  // new task form
   const handleFormChange = (field, value) => {
     setNewTaskData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // For handling "button-like" member selection
+  // toggleable buttons to assign members
   const handleToggleMember = (member) => {
     setNewTaskData((prev) => {
       let updatedMembers = [...prev.members];
       if (updatedMembers.includes(member)) {
-        // remove it
         updatedMembers = updatedMembers.filter((m) => m !== member);
       } else {
-        // add it
         updatedMembers.push(member);
       }
       return { ...prev, members: updatedMembers };
@@ -356,14 +354,12 @@ function HomePage() {
       selectedProject.tasksCompleted.push(newTask);
     }
 
-    // Force a "refresh" so the UI updates
     projectsData[selectedProjectIndex] = { ...selectedProject };
 
-    // Reset creation state
     setIsCreatingTask(false);
     setCreatingCategory(null);
 
-    // Optionally, select the newly created task
+    // select newly created task
     setSelectedTask(newTask);
     setSelectedTaskCategory(creatingCategory);
   };
@@ -374,7 +370,7 @@ function HomePage() {
     setNewTaskData({ name: '', description: '', deadline: '', members: [] });
   };
 
-  // *** STYLE HELPERS FOR INPUTS ***
+  // new task input styles
   const inputStyle = {
     backgroundColor: '#f0f0f0',
     border: 'none',
@@ -394,7 +390,7 @@ function HomePage() {
     e.currentTarget.style.backgroundColor = '#f0f0f0';
   };
 
-  // *** STYLE HELPERS FOR BUTTONS ***
+  // butto styles
   const buttonStyle = {
     backgroundColor: '#ddd',
     border: 'none',
@@ -405,9 +401,8 @@ function HomePage() {
     borderRadius: '0px'
   };
 
-  // *** RENDER CREATE TASK FORM OR TASK DETAILS ***
+  // create new task form
   const renderRightColumn = () => {
-    // If creating a task => show the form
     if (isCreatingTask && selectedProject) {
       return (
         <div>
@@ -443,7 +438,7 @@ function HomePage() {
               placeholder="Task description"
               rows={1}
               onInput={(e) => {
-                // Auto-grow
+                // text area expands when desc reaches new line
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
               }}
@@ -526,7 +521,7 @@ function HomePage() {
       );
     }
 
-    // If we have a selected task => show details
+    // show details of selected task
     if (selectedTask) {
       return (
         <div>
@@ -556,7 +551,7 @@ function HomePage() {
       );
     }
 
-    // Otherwise => "No task selected..."
+    // no task selected
     return <p style={{ fontStyle: 'italic' }}>No task selected...</p>;
   };
 
@@ -590,9 +585,9 @@ function HomePage() {
       </div>
 
 
-      {/* Main Content: 4 Columns */}
+      {/* homepage - 4 Columns */}
       <div style={{ display: 'flex', flex: 1 }}>
-        {/* COLUMN 1: Projects (25%) */}
+        {/* COLUMN 1: projects */}
         <div
           style={{
             width: '25%',
@@ -624,7 +619,7 @@ function HomePage() {
                   backgroundColor: isHovered ? '#e0e0e0' : 'transparent'
                 }}
               >
-                {/* If selected, show black bar on the right */}
+                {/* black bar beside selected project */}
                 {isSelected && (
                   <div
                     style={{
@@ -639,7 +634,7 @@ function HomePage() {
                 )}
                 {project.name}
 
-                {/* Show members if this project is selected */}
+                {/* dropdown to show members when selected */}
                 {isSelected && (
                   <div
                     style={{
@@ -662,7 +657,7 @@ function HomePage() {
           })}
         </div>
 
-        {/* COLUMN 2: Tasks To Do (25%) */}
+        {/* COLUMN 2: Tasks To Do */}
         <div
           style={{
             width: '25%',
@@ -697,7 +692,7 @@ function HomePage() {
                       backgroundColor: isHovered ? '#e0e0e0' : 'transparent'
                     }}
                   >
-                    {/* Black bar if the task is selected */}
+                    {/* black bar beside sleected task */}
                     {isSelected && (
                       <div
                         style={{
@@ -712,7 +707,7 @@ function HomePage() {
                     )}
                     {taskObj.name}
 
-                    {/* If this task is selected, show assigned members below it */}
+                    {/* show assignbed members below selected task */}
                     {isSelected && taskObj.members.length > 0 && (
                       <div
                         style={{
@@ -740,11 +735,11 @@ function HomePage() {
             <p style={{ fontStyle: 'italic' }}>Select a project...</p>
           )}
 
-          {/* + Add Task button for "to do" */}
+          {/* add task button for "to do" */}
           {selectedProject && renderAddTaskButton('todo')}
         </div>
 
-        {/* COLUMN 3: Completed Tasks (25%) */}
+        {/* COLUMN 3: Completed Tasks */}
         <div
           style={{
             width: '25%',
@@ -795,7 +790,7 @@ function HomePage() {
                     )}
                     {taskObj.name}
 
-                    {/* If this task is selected, show assigned members below it */}
+                    {/* show assigned members below when selected */}
                     {isSelected && taskObj.members.length > 0 && (
                       <div
                         style={{
@@ -823,11 +818,11 @@ function HomePage() {
             <p style={{ fontStyle: 'italic' }}>Select a project...</p>
           )}
 
-          {/* + Add Task button for "completed" */}
+          {/* add task button for "completed" */}
           {selectedProject && renderAddTaskButton('completed')}
         </div>
 
-        {/* COLUMN 4: Task Details or Task Creation Form (25%) */}
+        {/* COLUMN 4: task details/creation form */}
         <div style={{ width: '25%', padding: '1rem' }}>
           {selectedProject ? renderRightColumn() : <p>Please select a project</p>}
         </div>

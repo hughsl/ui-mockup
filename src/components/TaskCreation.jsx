@@ -7,13 +7,11 @@ function TaskCreation() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, just log it. In the future, you would send this to your backend.
     console.log('Creating task:', {
       title: taskTitle,
       assignee,
       deadline
     });
-    // Reset fields
     setTaskTitle('');
     setAssignee('');
     setDeadline('');
