@@ -1,0 +1,75 @@
+/* index.css */
+
+/* 
+  1) Basic Reset to remove default margins/paddings
+  2) Border-box sizing so widths include padding/border
+  3) Set a minimal background & text color
+  4) Provide a simple, modern-looking font stack
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", 
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", 
+    sans-serif;
+  /* You can toggle between light or dark color schemes here. */
+  color-scheme: light;
+}
+
+body {
+  background-color: #fdfdfd;
+  color: #333;
+  /* Remove any forced layout behavior here 
+     so the page can fill the entire screen. */
+}
+
+a {
+  color: #646cff;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+a:hover {
+  color: #4a4cd2;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+
+/* 
+  Buttons with a subtle style:
+  - Slight rounding of corners
+  - Neutral background, highlight on hover 
+*/
+button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  background-color: #fafafa;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+
+button:hover {
+  background-color: #ebebeb;
+  border-color: #d3d3d3;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px auto #646cff;
+}
